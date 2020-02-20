@@ -1,0 +1,38 @@
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `cliente`(IN `_id_cliente` VARCHAR(10), IN `_Nombre` VARCHAR(15), IN `_Ap_p` VARCHAR(15), IN `_id_calzado` VARCHAR(10), IN `_compra` INT(11))
+    NO SQL
+BEGIN
+START TRANSACTION;
+
+INSERT INTO cliente(id_cliente, Nombre, Ap_p, id_calzado, compra)
+VALUES(_id_cliente, _Nombre, _Ap_p, _id_calzado, 1);
+
+COMMIT;
+ROLLBACK;
+END$$
+DELIMITER ;
+
+-----------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `compras`(IN `_id_calzado` VARCHAR(10), IN `_genero` VARCHAR(15), IN `_estilo` VARCHAR(15), IN `_color` VARCHAR(15), IN `_precio` DECIMAL(8,2), IN `_existencia` INT(8))
+BEGIN
+	
+INSERT INTO almacen(id_calzado,genero,estilo,color,precio,existencia) VALUES(_id_calzado,_genero,_estilo,_color,_precio,_existencia);
+        END$$
+DELIMITER ;
+
+--------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ventas`(IN `venta` INT(4), IN `_id_calzado` VARCHAR(10))
+BEGIN
+START TRANSACTION;
+UPDATE almacen SET existencia=existencia-venta
+WHERE id_calzado=_id_calzado;
+COMMIT;
+ROLLBACK;
+END$$
+DELIMITER ;
+
+
+
